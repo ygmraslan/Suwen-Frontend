@@ -1,0 +1,17 @@
+.free-shipping-notice {
+    width: 100%;
+    margin: 0 auto;
+    padding: 15px 0;
+    font-weight: normal;
+    font-size: 0.9rem;
+    color: #ff8189;
+    text-align: center;
+    background-color: rgb(255 232 234);
+    user-select: none;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    letter-spacing: 0.03em;
+}

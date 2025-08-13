@@ -1,0 +1,38 @@
+.popular-icons-container {
+    display: flex;
+    gap: 50px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 2rem 0;
+    padding-top: 5rem;
+}
+
+.icon-item-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.icon-item-link:hover .icon-image {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+}
+
+.icon-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.icon-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 0.5rem;
+}
+
+.icon-title {
+    font-size: 0.95rem;
+    color: #333;
+}
