@@ -5,7 +5,6 @@ import { CiSearch } from "react-icons/ci";
 import { GoPerson } from "react-icons/go";
 import { BsBasket } from "react-icons/bs";
 import type { Category } from "../../types/Category";
-import logo from "../../../public/assets/logo.svg";
 import "../../css/Header.css";
 
 function Header() {
@@ -15,8 +14,8 @@ function Header() {
       name: "Sütyen",
       slug: "sutyen",
       subCategories: [
-        { id: 11, name: "Destekli sütyen", slug: "destekli-sutyen" },
-        { id: 12, name: "Desteksiz sütyen", slug: "desteksiz-sutyen" },
+        { id: 11, name: "Destekli Sütyen", slug: "destekli-sutyen" },
+        { id: 12, name: "Desteksiz Sütyen", slug: "desteksiz-sutyen" },
       ],
     },
     {
@@ -41,7 +40,6 @@ function Header() {
   // Animasyon: harf harf yazma efekti
   useEffect(() => {
     if (searchText !== "") {
-      // Kullanıcı yazıyor, animasyonu durdur
       setDisplayedText("");
       setCharIndex(0);
       return;
@@ -55,7 +53,6 @@ function Header() {
       }, 150);
       return () => clearTimeout(timeout);
     } else {
-      // Yazı tamamlandı, bir süre bekle sonra diğer kategoriye geç
       const timeout = setTimeout(() => {
         setCharIndex(0);
         setCategoryIndex((categoryIndex + 1) % categoryNames.length);
@@ -82,7 +79,7 @@ function Header() {
         {/* Logo */}
         <div className="logo-box">
           <Link to="/">
-            <img src={logo} alt="Logo" className="logo-img" />
+            <img src="/assets/logo.svg" alt="Logo" className="logo-img" />
           </Link>
         </div>
 
@@ -96,16 +93,15 @@ function Header() {
                 onMouseEnter={() => handleMouseEnter(category.id)}
                 onMouseLeave={handleMouseLeave}
               >
-                <span className="category-text">{category.name}</span>
+                <Link to={`/products/${category.slug}`} className="category-text">
+                  {category.name}
+                </Link>
 
                 {category.subCategories && openCategoryId === category.id && (
                   <ul className="subcategories-list">
                     {category.subCategories.map((sub) => (
                       <li key={sub.id} className="subcategory-item">
-                        <Link
-                          to={`/category/${sub.slug}`}
-                          className="subcategory-link"
-                        >
+                        <Link to={`/products/${sub.slug}`} className="subcategory-link">
                           {sub.name}
                         </Link>
                       </li>
@@ -144,7 +140,6 @@ function Header() {
           <button className="icon-button" aria-label="Kullanıcı">
             <GoPerson />
           </button>
-
         </div>
       </div>
     </header>

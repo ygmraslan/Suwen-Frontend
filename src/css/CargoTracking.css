@@ -1,0 +1,95 @@
+.corporate-page {
+    max-width: 1300px;
+    margin: 50px auto;
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 50px;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    padding: 0 20px;
+}
+
+.corporate-sidebar h4 {
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 15px;
+    color: #222;
+}
+
+.corporate-sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.corporate-sidebar ul li {
+    margin-bottom: 12px;
+}
+
+.corporate-sidebar ul li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 400;
+    transition: color 0.2s;
+}
+
+.corporate-sidebar ul li a:hover {
+    color: #ff69b4;
+}
+
+.corporate-content h1 {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 25px;
+    color: #222;
+}
+
+.corporate-content h2 {
+    font-size: 22px;
+    font-weight: 400;
+    margin-top: 25px;
+    margin-bottom: 12px;
+    color: #222;
+}
+
+.corporate-content h3 {
+    font-size: 18px;
+    font-weight: 400;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    color: #444;
+}
+
+.corporate-content p {
+    line-height: 1.8;
+    margin-bottom: 15px;
+    font-size: 15px;
+    color: #666;
+}
+
+.corporate-content a {
+    color: #ff69b4;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.corporate-content a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 1024px) {
+    .corporate-page {
+        grid-template-columns: 200px 1fr;
+        gap: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .corporate-page {
+        grid-template-columns: 1fr;
+    }
+
+    .corporate-sidebar {
+        margin-bottom: 30px;
+    }
+}

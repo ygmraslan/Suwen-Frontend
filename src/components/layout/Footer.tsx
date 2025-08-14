@@ -9,11 +9,22 @@ function Footer() {
 
                 {/* Sol Kısım - Logo */}
                 <div className="footer-left">
-                    <img src="/assets/logo.svg" alt="Logo" className="footer-logo" />
+                    <a href="/">
+                        <img src="/assets/logo.svg" alt="Logo" className="footer-logo" />
+                    </a>
                 </div>
 
                 {/* Orta Kısım - Menü Linkleri ve Sosyal Medya */}
                 <div className="footer-middle">
+                    <div>
+                        <h4>Yardım</h4>
+                        <ul>
+                            <li><Link to="/help/faq">Sıkça Sorulan Sorular</Link></li>
+                            <li><Link to="/help/returns-exchanges">İade, Değişim ve İptal İşlemleri</Link></li>
+                            <li><Link to="/help/cargo-tracking">Teslimat Koşulları ve Kargo İşlemleri</Link></li>
+                            <li><Link to="/help/contact">Bize Ulaşın</Link></li>
+                        </ul>
+                    </div>
                     <div>
                         <h4>Popüler Kategoriler</h4>
                         <ul>
@@ -22,15 +33,6 @@ function Footer() {
                             <li><a href="#">Sütyen</a></li>
                             <li><a href="#">Pijama</a></li>
                             <li><a href="#">Plaj</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4>Yardım</h4>
-                        <ul>
-                            <li><a href="#">Sık Sorulan Sorular</a></li>
-                            <li><a href="#">İade ve Değişim</a></li>
-                            <li><a href="#">Kargo Takip</a></li>
-                            <li><a href="#">İletişim</a></li>
                         </ul>
                     </div>
                     <div>

@@ -1,0 +1,90 @@
+.product-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #e0e0e0;
+    font-family: Arial, sans-serif;
+    margin-bottom: 20px;
+}
+
+.total-products {
+    font-size: 14px;
+    font-weight: 400;
+    color: #333;
+}
+
+.sort-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.sort-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 15px;
+    font-size: 14px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.sort-button:hover,
+.sort-button.active {
+    background-color: #ff8189;
+    color: #fff;
+    border-color: #ff8189;
+}
+
+.sort-button svg {
+    fill: currentColor;
+}
+
+.sort-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 5px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    z-index: 10;
+    min-width: 200px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sort-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    color: #333;
+}
+
+.sort-option:hover,
+.sort-option.selected {
+    background-color: #ff8189;
+    color: #fff;
+}
+
+.sort-option.selected svg {
+    fill: currentColor;
+}
+
+.sort-option:first-child {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.sort-option:last-child {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}

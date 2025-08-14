@@ -10,7 +10,7 @@
 .footer-container {
     margin: auto;
     display: grid;
-    grid-template-columns: 2fr 3fr 2fr;
+    grid-template-columns: 2fr 6fr 2fr;
     gap: 50px;
     align-items: start;
 }

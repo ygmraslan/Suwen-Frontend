@@ -2,11 +2,13 @@ import React from "react";
 import Header from "../../../src/components/layout/Header";
 import Footer from "../../../src/components/layout/Footer";
 import '../../css/Privacy.css';
+import Breadcrumbs from "../../components/common/Breadcrumbs";
 
 function PrivacyPolicy() {
     return (
         <div className="flex flex-col min-h-screen">
             <Header />
+            <Breadcrumbs />
 
             <div className="corporate-page">
                 {/* Sol Sidebar */}
