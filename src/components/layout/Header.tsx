@@ -5,30 +5,11 @@ import { CiSearch } from "react-icons/ci";
 import { GoPerson } from "react-icons/go";
 import { BsBasket } from "react-icons/bs";
 import type { Category } from "../../types/Category";
+import { useCategories } from "../../hooks/useCategories";
 import "../../css/Header.css";
 
 function Header() {
-  const categories: Category[] = [
-    {
-      id: 1,
-      name: "Sütyen",
-      slug: "sutyen",
-      subCategories: [
-        { id: 11, name: "Destekli Sütyen", slug: "destekli-sutyen" },
-        { id: 12, name: "Desteksiz Sütyen", slug: "desteksiz-sutyen" },
-      ],
-    },
-    {
-      id: 2,
-      name: "İç Giyim",
-      slug: "ic-giyim",
-      subCategories: [
-        { id: 14, name: "Atlet", slug: "atlet" },
-        { id: 15, name: "Külot", slug: "kulot" },
-      ],
-    },
-  ];
-
+  const { categories, loading } = useCategories();
   const [openCategoryId, setOpenCategoryId] = useState<number | null>(null);
   const [searchText, setSearchText] = useState("");
   const [displayedText, setDisplayedText] = useState("");
@@ -37,7 +18,6 @@ function Header() {
 
   const categoryNames = categories.map((c) => c.name);
 
-  // Animasyon: harf harf yazma efekti
   useEffect(() => {
     if (searchText !== "") {
       setDisplayedText("");
@@ -46,32 +26,28 @@ function Header() {
     }
 
     const currentCategory = categoryNames[categoryIndex];
-    if (charIndex <= currentCategory.length) {
-      const timeout = setTimeout(() => {
-        setDisplayedText(currentCategory.slice(0, charIndex));
-        setCharIndex(charIndex + 1);
-      }, 150);
-      return () => clearTimeout(timeout);
-    } else {
-      const timeout = setTimeout(() => {
-        setCharIndex(0);
-        setCategoryIndex((categoryIndex + 1) % categoryNames.length);
-      }, 1500);
-      return () => clearTimeout(timeout);
+
+    if (currentCategory) {
+      if (charIndex <= currentCategory.length) {
+        const timeout = setTimeout(() => {
+          setDisplayedText(currentCategory.slice(0, charIndex));
+          setCharIndex(charIndex + 1);
+        }, 150);
+        return () => clearTimeout(timeout);
+      } else {
+        const timeout = setTimeout(() => {
+          setCharIndex(0);
+          setCategoryIndex((categoryIndex + 1) % categoryNames.length);
+        }, 1500);
+        return () => clearTimeout(timeout);
+      }
     }
   }, [charIndex, categoryIndex, categoryNames, searchText]);
 
-  const handleMouseEnter = (id: number) => {
-    setOpenCategoryId(id);
-  };
-
-  const handleMouseLeave = () => {
-    setOpenCategoryId(null);
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleMouseEnter = (id: number) => setOpenCategoryId(id);
+  const handleMouseLeave = () => setOpenCategoryId(null);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setSearchText(e.target.value);
-  };
 
   return (
     <header className="custom-appbar">
@@ -86,30 +62,44 @@ function Header() {
         {/* Kategoriler */}
         <nav className="categories-nav">
           <ul className="categories-list">
-            {categories.map((category) => (
-              <li
-                key={category.id}
-                className="category-item"
-                onMouseEnter={() => handleMouseEnter(category.id)}
-                onMouseLeave={handleMouseLeave}
-              >
-                <Link to={`/products/${category.slug}`} className="category-text">
-                  {category.name}
-                </Link>
+            {loading ? (
+              <li className="category-item">Yükleniyor...</li>
+            ) : (
+              categories.map((category) => (
+                <li
+                  key={category.id}
+                  className="category-item"
+                  onMouseEnter={() => handleMouseEnter(category.id)}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <Link
+                    to={`/products/${category.slug}`}
+                    className="category-text"
+                    onClick={() => setOpenCategoryId(null)} // Ana kategoriye tıklayınca menü kapanır
+                  >
+                    {category.name}
+                  </Link>
 
-                {category.subCategories && openCategoryId === category.id && (
-                  <ul className="subcategories-list">
-                    {category.subCategories.map((sub) => (
-                      <li key={sub.id} className="subcategory-item">
-                        <Link to={`/products/${sub.slug}`} className="subcategory-link">
-                          {sub.name}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </li>
-            ))}
+                  {category.subCategories &&
+                    openCategoryId === category.id &&
+                    category.subCategories.length > 0 && (
+                      <ul className="subcategories-list">
+                        {category.subCategories.map((sub) => (
+                          <li key={sub.id} className="subcategory-item">
+                            <Link
+                              to={`/products/${sub.slug}`}
+                              className="subcategory-link"
+                              onClick={() => setOpenCategoryId(null)} // Alt kategoriye tıklayınca menü kapanır
+                            >
+                              {sub.name}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                </li>
+              ))
+            )}
           </ul>
         </nav>
 

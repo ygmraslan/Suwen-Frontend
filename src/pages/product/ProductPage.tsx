@@ -2,65 +2,42 @@ import React from "react";
 import Header from "../../components/layout/Header";
 import Footer from "../../components/layout/Footer";
 import Breadcrumbs from "../../components/common/Breadcrumbs";
+import { useCategories } from "../../hooks/useCategories";
 import { useCategory } from "../../hooks/UseCategory";
-import type { Category } from "../../types/Category";
-import type { Product } from "../../types/Products";
+import { useProducts } from "../../hooks/useProducts";
 import { FaStar, FaRegStar, FaStarHalfAlt } from "react-icons/fa";
 import { GoHeart } from "react-icons/go";
 import "../../css/ProductPage.css";
 import ProductListHeader from "./ProductListHeader";
-
-const mainCategories: Category[] = [
-    {
-        id: 1,
-        name: "Sütyen",
-        slug: "sutyen",
-        subCategories: [
-            { id: 11, name: "Destekli Sütyen", slug: "destekli-sutyen" },
-            { id: 12, name: "Desteksiz Sütyen", slug: "desteksiz-sutyen" },
-        ],
-    },
-    {
-        id: 2,
-        name: "İç Giyim",
-        slug: "ic-giyim",
-        subCategories: [
-            { id: 21, name: "Atlet", slug: "atlet" },
-            { id: 22, name: "Külot", slug: "kulot" },
-        ],
-    },
-];
-
-const products: Product[] = [
-    { id: 1, name: "Vizon Rosa Minimizer", price: 1499.99, image: "https://suwen.mncdn.com/mnresize/1200/-/suwen/Products/SW8335100_01.jpg", category: "sutyen", rating: 4.1 },
-    { id: 2, name: "Kahverengi Miranda", price: 1399.99, image: "https://suwen.mncdn.com/mnresize/1200/-/suwen/Products/SW8270023_01.jpg", category: "destekli-sutyen", rating: 3.5 },
-    { id: 3, name: "Vizon Celine", price: 1599.99, image: "https://suwen.mncdn.com/mnresize/1200/-/suwen/Products/SW8455100_01.jpg", category: "desteksiz-sutyen", rating: 4.3 },
-    { id: 4, name: "Atlet Basic", price: 499.99, image: "https://suwen.mncdn.com/mnresize/750/-/suwen/Products/ST6830607D023_01.jpg", category: "atlet", rating: 5.0 },
-    { id: 5, name: "Vizon Rosa Minimizer", price: 1499.99, image: "https://suwen.mncdn.com/mnresize/1200/-/suwen/Products/SW8335100_01.jpg", category: "sutyen", rating: 4.1 },
-    { id: 6, name: "Kahverengi Miranda", price: 1399.99, image: "https://suwen.mncdn.com/mnresize/1200/-/suwen/Products/SW8270023_01.jpg", category: "destekli-sutyen" },
-    { id: 7, name: "Vizon Celine", price: 1599.99, image: "https://suwen.mncdn.com/mnresize/1200/-/suwen/Products/SW8455100_01.jpg", category: "desteksiz-sutyen" },
-    { id: 8, name: "Atlet Basic", price: 499.99, image: "https://suwen.mncdn.com/mnresize/750/-/suwen/Products/ST6830607D023_01.jpg", category: "atlet" },
-];
+import type { Product } from "../../types/Products";
+import { Link } from "react-router-dom";
 
 function ProductPage() {
-    const { selectedCategory, selectedSubCategory } = useCategory(mainCategories);
+    // Backend’den kategorileri çek
+    const { categories, loading: categoriesLoading } = useCategories();
+
+    // useCategory hook’una kategori dizisini ver
+    const { selectedCategory, selectedSubCategory } = useCategory(categories || []);
+
+    // Backend’den ürünleri çek
+    const { products = [], loading: productsLoading, error } = useProducts();
+
     const [sortType, setSortType] = React.useState<string>("");
 
-    const handleSortChange = (sortKey: string) => {
-        setSortType(sortKey);
-    };
+    const handleSortChange = (sortKey: string) => setSortType(sortKey);
 
-    let filteredProducts = selectedSubCategory
-        ? products.filter((p) => p.category === selectedSubCategory.slug)
+    // filtreleme: categoryId ile eşleştirme
+    const filteredProducts: Product[] = selectedSubCategory
+        ? products.filter(p => p.categoryId === selectedSubCategory.id)
         : selectedCategory
             ? products.filter(
-                (p) =>
-                    p.category === selectedCategory.slug ||
-                    selectedCategory.subCategories?.some((sub) => sub.slug === p.category)
+                p =>
+                    p.categoryId === selectedCategory.id ||
+                    selectedCategory.subCategories?.some(sub => sub.id === p.categoryId)
             )
-            : [...products];
+            : products;
 
-    // Sort işlemi
+    // sıralama
     if (sortType) {
         filteredProducts.sort((a, b) => {
             switch (sortType) {
@@ -87,32 +64,38 @@ function ProductPage() {
                 />
 
                 <h2 className="section-title">
-                    {selectedSubCategory ? selectedSubCategory.name : selectedCategory ? selectedCategory.name : "Tüm Ürünler"}
+                    {selectedSubCategory?.name || selectedCategory?.name || "Tüm Ürünler"}
                 </h2>
 
-                {filteredProducts.length > 0 ? (
+                {categoriesLoading || productsLoading ? (
+                    <div>Yükleniyor...</div>
+                ) : error ? (
+                    <div>Ürünler yüklenirken hata oluştu: {error}</div>
+                ) : filteredProducts.length > 0 ? (
                     <div className="product-list-grid">
-                        {filteredProducts.map((product) => (
+                        {filteredProducts.map(product => (
                             <div key={product.id} className="product-list-item">
                                 <div className="product-image-container">
-                                    <img src={product.image} alt={product.name} />
-                                    <button className="wishlist-btn">
-                                        <GoHeart />
-                                    </button>
+                                    <Link to={`/products/detail/${product.id}`}>
+                                        <img src={product.imageUrl} alt={product.name} />
+                                    </Link>
+                                    <button className="wishlist-btn"><GoHeart /></button>
                                     <button className="add-to-basket-btn">Sepete Ekle</button>
                                 </div>
                                 <div className="product-details">
-                                    <div className="product-name">{product.name}</div>
+                                    <Link to={`/products/detail/${product.id}`} className="product-name-link">
+                                        {product.name}
+                                    </Link>
                                     <div className="product-rating">
                                         <span className="rating-score">{product.rating ?? 0}</span>
-                                        {[1, 2, 3, 4, 5].map((i) => {
+                                        {[1, 2, 3, 4, 5].map(i => {
                                             const rating = product.rating ?? 0;
+                                            if (rating === 0) return <FaRegStar key={i} />;
                                             if (i <= Math.floor(rating)) return <FaStar key={i} />;
                                             else if (i - rating <= 0.5 && i > rating) return <FaStarHalfAlt key={i} />;
                                             else return <FaRegStar key={i} />;
                                         })}
                                     </div>
-
                                     <div className="product-price">{product.price.toFixed(2)} TL</div>
                                 </div>
                             </div>

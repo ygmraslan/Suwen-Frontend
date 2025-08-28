@@ -11,6 +11,7 @@ import CargoTracking from './pages/help/CargoTracking'
 import Contact from './pages/help/Contact'
 import ScrollToTop from './components/ScrollToTop'
 import ProductPage from './pages/product/ProductPage'
+import ProductDetail from './pages/product/ProductDetail'
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
       <Routes>
         <Route path="/" element={<MainLayout />} />
         <Route path="/products/:categorySlug" element={<ProductPage />} />
+        <Route path="/products/detail/:id" element={<ProductDetail />} />
         <Route path="/corporate/about" element={<About />} />
         <Route path="/corporate/qualitypolicy" element={<QualityPolicy />} />
         <Route path="/corporate/privacy" element={<Privacy />} />
